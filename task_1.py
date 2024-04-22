@@ -1,5 +1,6 @@
 from qiskit import QuantumCircuit, execute, Aer
-from qiskit.quantum_info import Statevector
+from qiskit.visualization import plot_histogram
+
 
 # Создаем трехкубитную квантовую схему
 scheme3 = QuantumCircuit(3, 3)
@@ -28,6 +29,7 @@ for num_measurements in [10000]:
     result = execute(scheme3, Aer.get_backend('qasm_simulator'), shots=num_measurements).result()
     counts = result.get_counts(scheme3)
     print(f"Number of measurements: {num_measurements}, Result: {counts}")
+    plot_histogram(counts, filename='hist_3' + f'_{num_measurements}')
 
 num_measurements = 100
 combinations = ([0, 0], [0, 1], [1, 0], [1, 1])
