@@ -2,6 +2,7 @@ from qiskit import QuantumCircuit, execute, Aer
 from qiskit.visualization import plot_histogram
 
 
+# 1
 # Создаем трехкубитную квантовую схему
 scheme3 = QuantumCircuit(3, 3)
 
@@ -31,6 +32,7 @@ counts = result.get_counts(scheme3)
 print(f"Number of measurements: {num_measurements}, Result: {counts}")
 plot_histogram(counts, filename='hist_scheme_3')
 
+# 2
 # схема логического и (умножение)
 scheme_and = QuantumCircuit(3, 3)
 scheme_and.h(0)
@@ -41,8 +43,6 @@ scheme_and.barrier()
 scheme_and.ccx(0, 1, 2)
 
 scheme_and.measure(2, 2)
-
-# y =
 
 scheme_and.draw(output='mpl', filename='scheme_and')
 
@@ -75,3 +75,29 @@ result = execute(scheme_or, Aer.get_backend('qasm_simulator'), shots=num_measure
 counts = result.get_counts(scheme_or)
 print(f"Number of measurements: {num_measurements}, Result: {counts}")
 plot_histogram(counts, filename='hist_scheme_or')
+
+# 3
+# y = x1 + x2
+scheme_xor = QuantumCircuit(3, 3)
+
+scheme_xor.h(0)
+scheme_xor.h(1)
+
+scheme_or.barrier()
+
+# Применяем операцию XOR между первым и вторым кубитами
+scheme_xor.cx(0, 2)  # Применяем CNOT гейт с первого кубита на третий
+scheme_xor.cx(1, 2)  # Применяем CNOT гейт с второго кубита на третий
+
+scheme_xor.measure(2, 2)
+
+scheme_xor.draw(output='mpl', filename='scheme_xor')
+
+print('\nscheme_xor')
+num_measurements = 1000
+result = execute(scheme_xor, Aer.get_backend('qasm_simulator'), shots=num_measurements).result()
+counts = result.get_counts(scheme_xor)
+print(f"Number of measurements: {num_measurements}, Result: {counts}")
+plot_histogram(counts, filename='hist_scheme_xor')
+
+
